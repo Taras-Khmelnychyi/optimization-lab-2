@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\taras\\OneDrive\\Рабочий стол\\New folder\\Lab2.csproj": {}
+    "C:\\Users\\taras\\OneDrive\\Рабочий стол\\Lab2\\Lab2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\taras\\OneDrive\\Рабочий стол\\New folder\\Lab2.csproj": {
+    "C:\\Users\\taras\\OneDrive\\Рабочий стол\\Lab2\\Lab2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\taras\\OneDrive\\Рабочий стол\\New folder\\Lab2.csproj",
+        "projectUniqueName": "C:\\Users\\taras\\OneDrive\\Рабочий стол\\Lab2\\Lab2.csproj",
         "projectName": "Lab2",
-        "projectPath": "C:\\Users\\taras\\OneDrive\\Рабочий стол\\New folder\\Lab2.csproj",
+        "projectPath": "C:\\Users\\taras\\OneDrive\\Рабочий стол\\Lab2\\Lab2.csproj",
         "packagesPath": "C:\\Users\\taras\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\taras\\OneDrive\\Рабочий стол\\New folder\\obj\\",
+        "outputPath": "C:\\Users\\taras\\OneDrive\\Рабочий стол\\Lab2\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\taras\\AppData\\Roaming\\NuGet\\NuGet.Config",
