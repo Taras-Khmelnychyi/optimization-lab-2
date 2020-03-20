@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Lab2
 {
@@ -46,10 +44,12 @@ namespace Lab2
             return result;
         }
 
-        public void HandInit() {
+        public void HandInit(string message) {
             //reads one line in a row like
             //1, 2, 3
             //4, 5, 6
+
+            Console.WriteLine("Enter {0}", message);
             for (int i = 0; i < n; i++)
             {
                 var values = (Console.ReadLine().Split(' '));
@@ -92,13 +92,13 @@ namespace Lab2
             }
         }
 
-        public void ShowMatrix() {
-            Console.WriteLine("Matrix: {0}");
+        public void ShowMatrix(string message) {
+            Console.WriteLine("Matrix: {0}", message);
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
-                    Console.Write(string.Format("{0} ", matrix[i, j]));
+                    Console.Write(string.Format("{0:N2}   ", matrix[i, j]));
                 }
                 Console.WriteLine();
             }
@@ -106,12 +106,11 @@ namespace Lab2
 
         public void Create_C2()
         {
-
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
-                    matrix[i, j] = 1 / (((i + 1) + (j + 1)) * 2);
+                    matrix[i, j] = 1.0 / (((i + 1) + (j + 1)) * 2);
                 }
             }
         }
@@ -124,7 +123,7 @@ namespace Lab2
                 {
                     if (j == 0)
                     {
-                        matrix[i, j] = (j + 1 % 2 == 0) ? (3 / (Math.Pow(j + 1, 2) + 3)) : (3 / (j + 1));
+                        matrix[i, j] = (i + 1 % 2 == 0) ? (3.0 / (Math.Pow(i + 1, 2) + 3)) : (3.0 / (i + 1));
                     }
                     else
                     {

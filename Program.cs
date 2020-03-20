@@ -37,7 +37,7 @@ namespace Lab2
             bi = new MyMatrix(n);
             var create_bi = Task.Factory.StartNew(() => { bi.Create_bi(); });
             C2 = new MyMatrix(n);
-            var create_C2 = Task.Factory.StartNew(() => { C2.Create_bi(); });
+            var create_C2 = Task.Factory.StartNew(() => { C2.Create_C2(); });
 
             Console.WriteLine("Initialise random? y/n");
             ConsoleKey answer = Console.ReadKey(true).Key;
@@ -53,10 +53,10 @@ namespace Lab2
                 //creating and starting new task for each initial matrix to run in sync
                 var create_A = Task.Factory.StartNew(() => { A.RandomInitMatrix(); });
                 var create_A1 = Task.Factory.StartNew(() => { A1.RandomInitMatrix(); });
-                var create_A2 = Task.Factory.StartNew(() => { A1.RandomInitMatrix(); });
+                var create_A2 = Task.Factory.StartNew(() => { A2.RandomInitMatrix(); });
                 var create_B2 = Task.Factory.StartNew(() => { B2.RandomInitMatrix(); });
-                var create_b1 = Task.Factory.StartNew(() => { b1.RandomInitMatrix(); });
-                var create_c1 = Task.Factory.StartNew(() => { c1.RandomInitMatrix(); });
+                var create_b1 = Task.Factory.StartNew(() => { b1.RandomInitVector(); });
+                var create_c1 = Task.Factory.StartNew(() => { c1.RandomInitVector(); });
                 Task.WaitAll();
             }
             else
@@ -68,19 +68,22 @@ namespace Lab2
                 B2 = new MyMatrix(n);
                 b1 = new MyMatrix(n);
                 c1 = new MyMatrix(n);
-                A.HandInit();
-                A1.HandInit();
-                A2.HandInit();
-                B2.HandInit();
-                b1.HandInit();
-                c1.HandInit();
+                A.HandInit("A");
+                A1.HandInit("A1");
+                A2.HandInit("A2");
+                B2.HandInit("B2");
+                b1.HandInit("b1");
+                c1.HandInit("c1");
             }
 
             CompleteProcess();
         }
 
         public void CompleteProcess() {
-
+            //each element on each stage waits
+            //only NEEDED elements for his computation
+            //for example Y3 waits only for A2 and (B2 - C2)
+            //not for all stage
             //stage 2 processes (3b1 + c1), B2 - C2, A * bi
             var comp2_1 = Task<MyMatrix>.Factory.StartNew(() =>
             {
@@ -187,18 +190,19 @@ namespace Lab2
             //A1, A2, B2, C2, A, b1, c1, bi, Y3, y1, y2, Y3squared, Y3cubed
             if (answer == ConsoleKey.Y)
             {
-                A1.ShowMatrix();
-                A2.ShowMatrix();
-                B2.ShowMatrix();
-                C2.ShowMatrix();
-                A.ShowMatrix();
-                b1.ShowMatrix();
-                c1.ShowMatrix();
-                bi.ShowMatrix();
-                Y3.ShowMatrix();
-                y1.ShowMatrix();
-                y2.ShowMatrix();
-                result.ShowMatrix();
+                Console.WriteLine("Matrices:");
+                A1.ShowMatrix("A1");
+                A2.ShowMatrix("A2");
+                B2.ShowMatrix("B2");
+                C2.ShowMatrix("C2");
+                A.ShowMatrix("A");
+                b1.ShowMatrix("b1");
+                c1.ShowMatrix("c1");
+                bi.ShowMatrix("bi");
+                Y3.ShowMatrix("Y3");
+                y1.ShowMatrix("y1");
+                y2.ShowMatrix("y2");
+                result.ShowMatrix("result");
             }
 
             Console.WriteLine("Press any key to exit...");
