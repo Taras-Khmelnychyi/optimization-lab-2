@@ -84,6 +84,7 @@ namespace Lab2
             //only NEEDED elements for his computation
             //for example Y3 waits only for A2 and (B2 - C2)
             //not for all stage
+
             //stage 2 processes (3b1 + c1), B2 - C2, A * bi
             var comp2_1 = Task<MyMatrix>.Factory.StartNew(() =>
             {
@@ -113,7 +114,7 @@ namespace Lab2
             });
             this.Y3 = Y3.Result;
 
-            //stage 4 process Y3^2, y2 * y2'
+            //stage 4 process Y3^2, (y2 * y2'), (y2 * y1')
 
             List<Task> tasksTo_Y3squared = new List<Task> { Y3 };
             var Y3_squared = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_Y3squared.ToArray(), (some) =>
@@ -126,9 +127,14 @@ namespace Lab2
             {
                 return y2.Result * y2.Result.GetTransposed();
             });
+            List<Task> tasksTo_comp4_2 = new List<Task> { y2, y1 };
+            var comp4_2 = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_comp4_2.ToArray(), (some) =>
+            {
+                return y2.Result * y1.Result.GetTransposed();
+            });
 
 
-            //stage 5 process (Y3^3), (y2 * y1'), (Y3 * y2 * y2'), (Y3^2 * y1')
+            //stage 5 process (Y3^3),  (Y3 * y2 * y2'), (Y3^2 * y1')
 
             List<Task> tasksTo_Y3cubed = new List<Task> { Y3_squared };
             var Y3_cubed = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_Y3cubed.ToArray(), (some) =>
@@ -136,11 +142,6 @@ namespace Lab2
                 return Y3_squared.Result * Y3.Result;
             });
             this.Y3cubed = Y3_cubed.Result;
-            List<Task> tasksTo_comp5_1 = new List<Task> { y2, y1 };
-            var comp5_1 = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_comp5_1.ToArray(), (some) =>
-            {
-                return y2.Result * y1.Result.GetTransposed();
-            });
             List<Task> tasksTo_comp5_2 = new List<Task> { Y3, comp4_1 };
             var comp5_2 = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_comp5_2.ToArray(), (some) =>
             {
@@ -159,10 +160,10 @@ namespace Lab2
             {
                 return comp5_2.Result + Y3_cubed.Result;
             });
-            List<Task> tasksTo_comp6_2 = new List<Task> { Y3, comp5_1, comp5_3 };
+            List<Task> tasksTo_comp6_2 = new List<Task> { Y3, comp4_2, comp5_3 };
             var comp6_2 = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_comp6_2.ToArray(), (some) =>
             {
-                return Y3.Result + comp5_1.Result + comp5_3.Result;
+                return Y3.Result + comp4_2.Result + comp5_3.Result;
             });
 
             //Last stage
