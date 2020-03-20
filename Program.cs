@@ -10,7 +10,6 @@ namespace Lab2
         {
             MainProcessing prc = new MainProcessing();
             prc.Start();
-
         }
     }
 
@@ -18,9 +17,7 @@ namespace Lab2
     class MainProcessing
     {
         int n;
-        
         public MyMatrix A1, A2, B2, C2, A, b1, c1, bi, Y3, y1, y2, Y3squared, Y3cubed;
-        
         public MyMatrix result;
 
         public void Start() {
@@ -32,7 +29,6 @@ namespace Lab2
 
         private void initStage() {
             //init stage
-
             //initialised by formula
             bi = new MyMatrix(n);
             var create_bi = Task.Factory.StartNew(() => { bi.Create_bi(); });
@@ -75,11 +71,10 @@ namespace Lab2
                 b1.HandInit("b1");
                 c1.HandInit("c1");
             }
-
             CompleteProcess();
         }
 
-        public void CompleteProcess() {
+        private void CompleteProcess() {
             //each element on each stage waits
             //only NEEDED elements for his computation
             //for example Y3 waits only for A2 and (B2 - C2)
@@ -105,8 +100,6 @@ namespace Lab2
                 return A1 * comp2_1.Result;
             });
             this.y2 = y2.Result;
-
-
             List<Task> tasksTo_Y3 = new List<Task> { comp2_2 };
             var Y3 = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_Y3.ToArray(), (some) =>
             {
@@ -115,7 +108,6 @@ namespace Lab2
             this.Y3 = Y3.Result;
 
             //stage 4 process Y3^2, (y2 * y2'), (y2 * y1')
-
             List<Task> tasksTo_Y3squared = new List<Task> { Y3 };
             var Y3_squared = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_Y3squared.ToArray(), (some) =>
             {
@@ -133,9 +125,7 @@ namespace Lab2
                 return y2.Result * y1.Result.GetTransposed();
             });
 
-
             //stage 5 process (Y3^3),  (Y3 * y2 * y2'), (Y3^2 * y1')
-
             List<Task> tasksTo_Y3cubed = new List<Task> { Y3_squared };
             var Y3_cubed = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_Y3cubed.ToArray(), (some) =>
             {
@@ -154,7 +144,6 @@ namespace Lab2
             });
 
             //stage 6 process 
-
             List<Task> tasksTo_comp6_1 = new List<Task> { comp5_2, Y3_cubed };
             var comp6_1 = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_comp6_1.ToArray(), (some) =>
             {
@@ -167,7 +156,6 @@ namespace Lab2
             });
 
             //Last stage
-
             List<Task> lastTask = new List<Task> { comp6_1, comp6_2 };
             var result = Task<MyMatrix>.Factory.ContinueWhenAll(tasksTo_comp6_2.ToArray(), (some) =>
             {
@@ -180,7 +168,6 @@ namespace Lab2
             });
 
             Task.WaitAll();
-
             ResultStage();
         }
 
@@ -208,6 +195,7 @@ namespace Lab2
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
+            SaveResult();
         }
     }   
 }

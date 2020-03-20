@@ -10,7 +10,7 @@ namespace Lab2
         {
             get { return n; }
         }
-        private double[,] matrix;
+        public double[,] matrix;
 
         public MyMatrix(int n)
         {
