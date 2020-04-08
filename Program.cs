@@ -8,13 +8,17 @@ namespace Lab2
     {
         static void Main()
         {
-            MainProcessing prc = new MainProcessing();
+            //MyMatrix A = new MyMatrix(2);
+            //MyMatrix B = new MyMatrix(2);
+            //A.HandInit("A");
+            //B.HandInit("B");
+            //(A * B).ShowMatrix("A + B"); 
+            MainProcess prc = new MainProcess();
             prc.Start();
         }
     }
 
-
-    class MainProcessing
+    class MainProcess
     {
         int n;
         public MyMatrix A1, A2, B2, C2, A, b1, c1, bi, Y3, y1, y2, Y3squared, Y3cubed;
@@ -24,10 +28,10 @@ namespace Lab2
             
             Console.WriteLine("Enter n: ");
             n = Convert.ToInt32(Console.ReadLine());
-            initStage();
+            InitStage();
         }
 
-        private void initStage() {
+        private void InitStage() {
             //init stage
             //initialised by formula
             bi = new MyMatrix(n);
@@ -71,27 +75,30 @@ namespace Lab2
                 b1.HandInit("b1");
                 c1.HandInit("c1");
             }
-            CompleteProcess();
+            MainSync();
         }
 
-        private void CompleteProcess() {
+        private void MainSync() {
             //each element on each stage waits
             //only NEEDED elements for his computation
             //for example Y3 waits only for A2 and (B2 - C2)
             //not for all stage
 
-            //stage 2 processes (3b1 + c1), B2 - C2, A * bi
+            //stage 2 processes , B2 - C2, A * bi
             var comp2_1 = Task<MyMatrix>.Factory.StartNew(() =>
             {
                 return ((b1 * 3) + c1);
             });
             var comp2_2 = Task<MyMatrix>.Factory.StartNew(() =>
             {
-                return B2 - C2;
+                return B2 + C2;
             });
             var y1 = Task<MyMatrix>.Factory.StartNew(() => { return A * bi; });
             this.y1 = y1.Result;
 
+            
+            comp2_1.Result.ShowMatrix("3b1 + c1");
+            comp2_2.Result.ShowMatrix("B2+C2");
             //stage 3 processes y2, Y3
 
             List<Task> tasksTo_y2 = new List<Task> { comp2_1 };
@@ -195,7 +202,6 @@ namespace Lab2
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
-            SaveResult();
         }
     }   
 }

@@ -46,8 +46,8 @@ namespace Lab2
 
         public void HandInit(string message) {
             //reads one line in a row like
-            //1, 2, 3
-            //4, 5, 6
+            //1 2 3
+            //4 5 6
 
             Console.WriteLine("Enter {0}", message);
             for (int i = 0; i < n; i++)
@@ -110,7 +110,7 @@ namespace Lab2
             {
                 for (int j = 0; j < n; j++)
                 {
-                    matrix[i, j] = 1.0 / (((i + 1) + (j + 1)) * 2);
+                    matrix[i, j] = 1.0 / (((i + 1) + (j + 1)) * 2.0);
                 }
             }
         }
@@ -123,7 +123,7 @@ namespace Lab2
                 {
                     if (j == 0)
                     {
-                        matrix[i, j] = (i + 1 % 2 == 0) ? (3.0 / (Math.Pow(i + 1, 2) + 3)) : (3.0 / (i + 1));
+                        matrix[i, j] = (((i + 1) % 2) == 0) ? (3.0 / (Math.Pow(i + 1, 2) + 3.0)) : (3.0 / (i + 1));
                     }
                     else
                     {
@@ -197,12 +197,8 @@ namespace Lab2
             {
                 for (int j = 0; j < m1.n; j++)
                 {
-                    double tmp = 0;
-                    for (int k = 0; k < m1.n; k++)
-                    {
-                        tmp += m1[i, k] * value;
-                    }
-                    result[i, j] = tmp;
+                    result[i, j] = m1[i, j] * value;
+                    
                 }
             }
             return result;
